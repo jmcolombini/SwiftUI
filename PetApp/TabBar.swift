@@ -7,22 +7,6 @@
 
 import SwiftUI
 
-//struct TabBar: View {
-//    var body: some View {
-//        TabView {
-//            ContentView()
-//                .tabItem {
-//                    Image(systemName: "pawprint")
-//                }
-//            Text("Profile")
-//                .tabItem {
-//                    Image(systemName: "person")
-//                }
-//        }
-//
-//    }
-//}
-
 struct TabBar: View {
     @State private var selectedTab = 0
 
@@ -37,7 +21,7 @@ struct TabBar: View {
                     Text("Home")
                 }
                 .tag(0)
-
+            
             SettingsView()
                 .tabItem {
                     Image(systemName: "person")
@@ -52,14 +36,6 @@ struct TabBar: View {
     }
 }
 
-struct HomeView: View {
-    var body: some View {
-        NavigationView {
-            Text("Home View")
-                .navigationTitle("Home")
-        }
-    }
-}
 
 struct SettingsView: View {
     var body: some View {
@@ -67,12 +43,6 @@ struct SettingsView: View {
             Text("Settings View")
                 .navigationTitle("Settings")
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
 
