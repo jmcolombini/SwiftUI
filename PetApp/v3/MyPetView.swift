@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct MyPetView: View {
+    var pets = [
+        Pet(name: "Mite", imageURL: .mite),
+        Pet(name: "Lia", imageURL: .mite),
+        Pet(name: "Lia", imageURL: .mite),
+        Pet(name: "Fred", imageURL: .mite)
+    ]
     var body: some View {
         NavigationView {
             ZStack {
@@ -18,9 +24,10 @@ struct MyPetView: View {
                 VStack {
                     ScrollView {
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                PetCardView(imageName: "mite", petName: "Mite")
-                                PetCardView(imageName: "mite", petName: "Lia") 
+                            HStack(spacing: 20) {
+                                ForEach(pets) { pet in
+                                    PetCardView(imageName: UIImage(data: pet.imageURL)!, petName: pet.name)
+                                }
                             }
                             .padding(.horizontal, 30)
                             Spacer()
@@ -52,33 +59,22 @@ struct MyPetView: View {
 }
 
 struct PetCardView: View {
-    var imageName: String
+    var imageName: UIImage
     var petName: String
     
     var body: some View {
         VStack(spacing: 15) {
-            Image(imageName)
+            Image(uiImage: imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 330, height: 450)
                 .clipShape(RoundedRectangle(cornerRadius: 60))
-            
-            //            .overlay(
-            //                Text(petName)
-            //                    .font(.largeTitle)
-            //                    .fontWeight(.medium)
-            //                    .foregroundColor(.white)
-            //                    .padding(.leading, 20)
-            //                    .padding(.bottom, 15),
-            //                alignment: .bottomLeading
-            //            )
-            //            .shadow(radius: 5)
         }
         .overlay {
             VStack {
                 Spacer()
                 HStack {
-                    Text("Brenno")
+                    Text(petName)
                     Spacer()
                 }
             }
@@ -90,6 +86,80 @@ struct PetCardView: View {
     }
 }
 
+struct SelectedPetView: View {
+    @State var showSheet = false
+    var body: some View {
+        NavigationStack {
+            VStack {
+                HStack(spacing: 15) {
+                    Image(uiImage: .mite)
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .scaledToFill()
+                        .clipShape(Circle())
+                    
+                    HStack {
+                        Text("Mite")
+                            .font(.system(size: 36, weight: .semibold))
+                        Button {
+                            showSheet.toggle()
+                        } label: {
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.medium)
+                                .foregroundStyle(.black)
+                        }
+                            
+                        
+                    }
+                    .sheet(isPresented: $showSheet) {
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Selecione o pet")
+                                .font(.headline)
+                                .padding(.leading)
+                                .padding(.top)
+                            
+                            Divider()
+                            
+                            HStack {
+                                Image(uiImage: .mite)
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .scaledToFill()
+                                    .clipShape(Circle())
+                                
+                                Text("Mite")
+                                    .font(.system(size: 20, weight: .semibold))
+                                Spacer()
+                            }
+                            .padding(.leading)
+                            
+                            .presentationDetents([.height(100)])
+                        }
+                        
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, -15)
+                ScrollView {
+                    
+                }
+            }
+            .navigationBarItems(
+                trailing:
+                    NavigationLink {
+                        Text("Add a pet view")
+                    } label: {
+                        Image(systemName: "plus")
+                            .foregroundStyle(.black)
+                    })
+        }
+    }
+}
+
 #Preview {
-    PetCardView(imageName: "mite", petName: "Mite")
+    PetCardView(imageName: .mite, petName: "Mite")
+}
+#Preview {
+    SelectedPetView()
 }
