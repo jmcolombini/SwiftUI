@@ -87,6 +87,12 @@ struct PetCardView: View {
 }
 
 struct SelectedPetView: View {
+    var pets = [
+        Pet(name: "Mite", imageURL: .mite),
+        Pet(name: "Lia", imageURL: .mite),
+        Pet(name: "Lia", imageURL: .mite),
+        Pet(name: "Fred", imageURL: .mite)
+    ]
     @State var showSheet = false
     var body: some View {
         NavigationStack {
@@ -138,12 +144,34 @@ struct SelectedPetView: View {
                         
                     }
                     Spacer()
+                    
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, -15)
                 ScrollView {
+                    //Continuar vstack daqui
+                    VStack(spacing: 30) {
+                        HStack(spacing: 30) {
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                        }
+                        HStack(spacing: 30) {
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                        }
+                    }
+                    
                     
                 }
+                .padding(.top, 60)
             }
             .navigationBarItems(
                 trailing:
