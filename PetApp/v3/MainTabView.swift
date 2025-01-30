@@ -1,8 +1,8 @@
 //
-//  TabView.swift
-//  PetTelas
+//  MainTabView.swift
+//  PetApp
 //
-//  Created by found on 24/01/25.
+//  Created by João Marcelo Colombini Cardonha on 29/01/25.
 //
 
 import SwiftUI
@@ -12,7 +12,7 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             // Primeira aba
-            MyPetView()
+            SelectedPetView()
                 .tabItem {
                     Label("Meus bichos", systemImage:  "pawprint")
                 }
