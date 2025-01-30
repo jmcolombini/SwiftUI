@@ -14,6 +14,7 @@ struct SignUpview: View {
     @State var username = ""
     @State private var isPasswordVisible = false
     @State private var isConfirmPasswordVisible = false
+    @State var showSignInView = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -151,7 +152,8 @@ struct SignUpview: View {
                             VStack(alignment: .center, spacing: 10) {
                                 Text("Já tem uma conta?")
                                     .font(.title3)
-                                NavigationLink(destination: SignInView().toolbar(.hidden)) {
+                                
+                                NavigationLink(destination: SignInView(show: $showSignInView).toolbar(.hidden)) {
                                     Text("Faça login")
                                         .foregroundStyle(Color(red: 1, green: 0.65, blue: 0))
                                         .fontWeight(.semibold)

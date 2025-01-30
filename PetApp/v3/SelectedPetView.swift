@@ -1,0 +1,181 @@
+//
+//  SelectedPetView.swift
+//  PetTelas
+//
+//  Created by found on 30/01/25.
+//
+
+import SwiftUI
+
+struct SelectedPetView: View {
+    @EnvironmentObject var viewModel: PetViewModel    
+    @State var showSheet = false
+    @State private var showAddAnimalView = false
+    @State var selectedPet = 0
+    var body: some View {
+        NavigationStack {
+            VStack {
+                HStack(spacing: 15) {
+                    Image(uiImage: UIImage(data: viewModel.pets[selectedPet].imageURL)!)
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .scaledToFill()
+                        .clipShape(Circle())
+                    
+                    HStack {
+                        Text(viewModel.pets[selectedPet].name)
+                            .font(.system(size: 36, weight: .semibold))
+                        Button {
+                            showSheet.toggle()
+                        } label: {
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.medium)
+                                .foregroundStyle(.black)
+                        }
+                            
+                        
+                    }
+                    .sheet(isPresented: $showSheet) {
+                        SheetView(showAddPetView: $showAddAnimalView, showSheet: $showSheet, pets: $viewModel.pets)
+                            .presentationDetents([.height(sheetHeight())])
+                            .presentationDragIndicator(.visible)
+
+                    }
+                    .navigationDestination(isPresented: $showAddAnimalView) {
+                        AddPetView()
+                    }
+                    
+                    Spacer()
+                    
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, -15)
+                ScrollView {
+                    //Continuar vstack daqui
+                    VStack(spacing: 30) {
+                        HStack(spacing: 30) {
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                        }
+                        HStack(spacing: 30) {
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                            Rectangle()
+                                .frame(width: 150, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 30))
+                        }
+                    }
+                    
+                    
+                }
+                .padding(.top, 60)
+            }
+            .navigationBarItems(
+                trailing:
+                    NavigationLink {
+                        AddPetView()
+                    } label: {
+                        Image(systemName: "plus")
+                            .foregroundStyle(.black)
+                    })
+        }
+    }
+    private func sheetHeight() -> CGFloat {
+        let addButtonHeight: CGFloat = 40
+        let baseHeight: CGFloat = 30  // Altura mínima
+        let itemHeight: CGFloat = 65   // Altura estimada por item
+        return addButtonHeight + baseHeight + itemHeight * CGFloat(viewModel.pets.count)
+        }
+}
+
+#Preview {
+    SelectedPetView()
+        .environmentObject(PetViewModel())
+}
+
+struct SheetView: View {
+    @Environment(\.dismiss) var dismiss
+    @Binding var showAddPetView: Bool
+    @Binding var showSheet: Bool
+    @Binding var pets: [Pet]
+
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .center, spacing: 10) {
+                VStack(spacing: 20) {
+                    ForEach(pets.indices) { index in
+                        HStack(spacing: 15) {
+                            Image(uiImage: UIImage(data: pets[index].imageURL)!)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .scaledToFill()
+                                .clipShape(Circle())
+                            
+                            Text(pets[index].name)
+                                .font(.system(size: 20, weight: .semibold))
+                            Spacer()
+                            
+                            Image(systemName: pets[index].isSelected ? "checkmark.circle.fill" : "")
+                                .resizable()
+                                .fontWeight(pets[index].isSelected ? .regular :  .ultraLight)
+                                .frame(width: 20, height: 20)
+                                .foregroundStyle(.orange)
+                                
+                        }
+                        .onTapGesture {
+                            selectPet(index)
+                        }
+                        .padding(.horizontal)
+                        
+                    }
+                    
+                    Button {
+                        let pet = Pet(name: "Lia", imageURL: .lia, isSelected: false)
+                        pets.append(pet)
+                        showSheet = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            showAddPetView = true
+                        }
+                    } label: {
+                        HStack(spacing: 15) {
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .fontWeight(.ultraLight)
+                                .foregroundStyle(.accent)
+                            
+                            Text("Adicione outro animal")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.black)
+                            Spacer()
+                        }
+                        .padding(.leading)
+                    }
+                }
+            }
+            .padding(.top)
+        }
+    }
+    
+    private func selectPet(_ index: Int) {
+        // Cria uma cópia do array de pets com o pet selecionado
+        pets = pets.map { pet in
+            var petCopy = pet
+            petCopy.isSelected = false // Desmarca todos
+            return petCopy
+        }
+        // Marca o pet selecionado
+        pets[index].isSelected = true
+        if index > 0 {
+            let item = pets.remove(at: index)  // Remove o item da posição 2 (30)
+            withAnimation(.snappy) {
+                pets.insert(item, at: 0)
+            }
+        }
+    }
+}

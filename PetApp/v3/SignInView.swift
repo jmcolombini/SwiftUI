@@ -13,8 +13,9 @@ struct SignInView: View {
     @State var textPassword = ""
     @State var isPasswordVisible = false
     @State var isFormCompleted = false
+    @Binding var show: Bool
+    @Environment(\.dismiss) var dismiss
     var body: some View {
-        NavigationStack {
             if showTabView {
                 MainTabView(show: $showTabView)
             } else {
@@ -93,7 +94,7 @@ struct SignInView: View {
                                 }
                                 
                                 Button {
-                                    withAnimation(.snappy) {
+                                    withAnimation(.linear) {
                                         showTabView.toggle()
                                     }
                                     
@@ -135,7 +136,7 @@ struct SignInView: View {
                                     Text("Não tem uma conta?")
                                         .font(.title3)
                                     
-                                    NavigationLink(destination: SignUpview().toolbar(.hidden)) {
+                                    NavigationLink(destination: SignUpview()) {
                                         Text("Cadastre-se aqui")
                                             .foregroundStyle(Color(red: 1, green: 0.65, blue: 0))
                                             .fontWeight(.semibold)
@@ -154,7 +155,7 @@ struct SignInView: View {
                     
                     
                     
-                }
+                
             }
         }
         
@@ -182,5 +183,6 @@ struct TextFieldComponent: View {
 }
 
 #Preview {
-    SignInView()
+    SignInView(show: .constant(true))
+        .environmentObject(PetViewModel())
 }

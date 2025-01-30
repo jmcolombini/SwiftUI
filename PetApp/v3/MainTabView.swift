@@ -1,8 +1,8 @@
 //
-//  MainTabView.swift
-//  PetApp
+//  TabView.swift
+//  PetTelas
 //
-//  Created by João Marcelo Colombini Cardonha on 29/01/25.
+//  Created by found on 24/01/25.
 //
 
 import SwiftUI
@@ -29,6 +29,7 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView(show: .constant(true))
+        .environmentObject(PetViewModel())
 }
 
 struct AccountView: View {

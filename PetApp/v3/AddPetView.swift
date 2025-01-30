@@ -1,8 +1,8 @@
 //
 //  AddPetView.swift
-//  PetApp
+//  PetTelas
 //
-//  Created by João Marcelo Colombini Cardonha on 30/01/25.
+//  Created by found on 30/01/25.
 //
 
 import SwiftUI
