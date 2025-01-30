@@ -1,8 +1,8 @@
 //
 //  Pet.swift
-//  PetApp
+//  PetTelas
 //
-//  Created by João Marcelo Colombini Cardonha on 29/01/25.
+//  Created by found on 29/01/25.
 //
 
 import Foundation
